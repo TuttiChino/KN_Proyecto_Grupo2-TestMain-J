@@ -1,0 +1,56 @@
+﻿@model ProyectoFinal.Models.CitaDto
+@{
+    ViewBag.Title = "Editar Cita";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<div class="card shadow p-4">
+    <h2 class="text-warning text-center mb-4">Editar Cita</h2>
+
+    @using (Html.BeginForm("EditarCita", "Citas", FormMethod.Post, new { novalidate = "novalidate" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.IdCita)
+
+        <div class="mb-3">
+            <label class="form-label">ID del Doctor</label>
+            <input type="number" name="DoctorId" value="@Model.IdDoctor" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">ID del Paciente</label>
+            <input type="number" name="PacienteId" value="@Model.IdPaciente" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Fecha y Hora de Inicio</label>
+            <input type="datetime-local" name="FechaInicio"
+                   value="@Model.FechaHoraInicio.ToString("yyyy-MM-ddTHH:mm")"
+                   class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Fecha y Hora de Fin</label>
+            <input type="datetime-local" name="FechaFin"
+                   value="@Model.FechaHoraFin.ToString("yyyy-MM-ddTHH:mm")"
+                   class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Motivo</label>
+            <textarea name="Motivo" class="form-control" rows="3">@Model.Motivo</textarea>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="@Url.Action("MainC", "Citas")" class="btn btn-secondary">Volver</a>
+            <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+        </div>
+    }
+
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger mt-3" })
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success mt-3 text-center">@TempData["Success"]</div>
+    }
+</div>

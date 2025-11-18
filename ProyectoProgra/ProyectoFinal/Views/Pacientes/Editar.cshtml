@@ -1,0 +1,110 @@
+@model ProyectoFinal.EF.tbUsuario
+
+@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    ViewBag.Title = "Editar Paciente | Admin";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="bi bi-pencil-square"></i> Editar Paciente
+                    </h4>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @ViewBag.Error
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Editar", "Pacientes", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.ConsecutivoUsuario" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Identificaci&oacute;n</label>
+                            <input type="text" class="form-control" value="@Model.Identificacion" disabled />
+                            <small class="form-text text-muted">La identificaci&oacute;n no puede ser modificada.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">
+                                Nombre Completo <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" 
+                                   value="@Model.Nombre" required maxlength="120" />
+                            <div class="invalid-feedback">
+                                Por favor ingrese el nombre del paciente.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="correoElectronico" class="form-label">
+                                Correo Electr&oacute;nico <span class="text-danger">*</span>
+                            </label>
+                            <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" 
+                                   value="@Model.CorreoElectronico" required maxlength="150" />
+                            <div class="invalid-feedback">
+                                Por favor ingrese un correo electrónico válido.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contrasenna" class="form-label">
+                                Nueva Contrase&ntilde;a
+                            </label>
+                            <input type="password" class="form-control" id="contrasenna" name="contrasenna" 
+                                   maxlength="100" placeholder="Dejar vac&iacute;o para mantener la contrase&ntilde;a actual" />
+                            <small class="form-text text-muted">Solo complete si desea cambiar la contrase&ntilde;a.</small>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="hidden" name="estado" value="false" />
+                            <input type="checkbox" class="form-check-input" id="estado" name="estado" value="true" 
+                                   @(Model.Estado ? "checked" : "") />
+                            <label class="form-check-label" for="estado">
+                                Usuario Activo
+                            </label>
+                        </div>
+
+                        <div class="form-group text-right">
+                            <a href="@Url.Action("Index", "Pacientes")" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-check-circle"></i> Actualizar
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Validación de formulario
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+

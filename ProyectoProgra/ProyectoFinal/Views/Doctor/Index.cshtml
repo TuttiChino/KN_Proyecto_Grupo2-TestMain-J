@@ -1,0 +1,107 @@
+﻿@model IEnumerable<ProyectoFinal.EF.tbCita>
+@{
+    ViewBag.Title = "Mis Citas";
+}
+
+<h2>Mis Citas - @ViewBag.NombreDoctor</h2>
+<div class="row text-center mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm border-success">
+            <div class="card-body">
+                <h5 class="text-success">Programadas</h5>
+                <h3>@ViewBag.TotalProgramadas</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-primary">
+            <div class="card-body">
+                <h5 class="text-primary">Completadas</h5>
+                <h3>@ViewBag.TotalCompletadas</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-danger">
+            <div class="card-body">
+                <h5 class="text-danger">Canceladas</h5>
+                <h3>@ViewBag.TotalCanceladas</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Exito"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Paciente</th>
+            <th>Fecha</th>
+            <th>Hora Inicio</th>
+            <th>Hora Fin</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.tbUsuario.Nombre</td>
+                <td>@c.Fecha.ToShortDateString()</td>
+                <td>@c.HoraInicio</td>
+                <td>@c.HoraFin</td>
+                <td>@c.Estado</td>
+                <td>
+                    @if (c.Estado == "Programada" || c.Estado == "Reprogramada")
+                    {
+                        @Html.ActionLink("Editar", "EditarCita", new { id = c.ConsecutivoCita },
+                            new { @class = "btn btn-warning btn-sm", style = "margin-right:5px;" })
+
+                        @Html.ActionLink("Completar", "CompletarCita", new { id = c.ConsecutivoCita },
+                            new { @class = "btn btn-success btn-sm", style = "margin-right:5px;" })
+
+                        @Html.ActionLink("Cancelar", "CancelarCita", new { id = c.ConsecutivoCita },
+                            new { @class = "btn btn-danger btn-sm" })
+                    }
+                    else
+                    {
+                        <span class="text-secondary"><i class="bi bi-check2-circle"></i></span>
+
+                    }
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("NuevaCita")" class="btn btn-success">Agendar Nueva Cita</a>
+<hr />
+@using (Html.BeginForm("LimpiarCitas", "Doctor", FormMethod.Post))
+{
+    <button type="submit" class="btn btn-outline-danger" onclick="return confirm('¿Seguro que desea eliminar todas las citas?');">
+        Limpiar Panel
+    </button>
+}

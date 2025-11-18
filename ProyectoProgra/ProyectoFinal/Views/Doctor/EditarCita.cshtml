@@ -1,0 +1,45 @@
+﻿@model ProyectoFinal.EF.tbCita
+@{
+    ViewBag.Title = "Editar Cita";
+}
+
+<h2>Editar Cita</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@using (Html.BeginForm("EditarCita", "Doctor", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ConsecutivoCita)
+
+    <div class="form-group">
+        <label>Paciente</label>
+        @Html.DropDownListFor(m => m.ConsecutivoPaciente, (SelectList)ViewBag.Pacientes, "Seleccione un paciente", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Fecha</label>
+        @Html.TextBoxFor(m => m.Fecha, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+    </div>
+
+    <div class="form-group">
+        <label>Hora Inicio</label>
+        @Html.TextBoxFor(m => m.HoraInicio, new { @class = "form-control", type = "time" })
+    </div>
+
+    <div class="form-group">
+        <label>Hora Fin</label>
+        @Html.TextBoxFor(m => m.HoraFin, new { @class = "form-control", type = "time" })
+    </div>
+
+    <div class="form-group">
+        <label>Observaciones</label>
+        @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
+}

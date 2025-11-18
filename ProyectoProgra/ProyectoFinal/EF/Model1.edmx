@@ -1,0 +1,604 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BDCitasMedicasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbCita">
+          <Key>
+            <PropertyRef Name="ConsecutivoCita" />
+          </Key>
+          <Property Name="ConsecutivoCita" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConsecutivoPaciente" Type="int" Nullable="false" />
+          <Property Name="ConsecutivoMedico" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="date" Nullable="false" />
+          <Property Name="HoraInicio" Type="time" Precision="0" Nullable="false" />
+          <Property Name="HoraFin" Type="time" Precision="0" Nullable="false" />
+          <Property Name="Estado" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Observaciones" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="tbErrorLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaHora" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" />
+          <Property Name="Area" Type="nvarchar" MaxLength="50" />
+          <Property Name="Controlador" Type="nvarchar" MaxLength="50" />
+          <Property Name="Accion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mensaje" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="StackTrace" Type="nvarchar(max)" />
+          <Property Name="DataJson" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tbEspecialidad">
+          <Key>
+            <PropertyRef Name="ConsecutivoEspecialidad" />
+          </Key>
+          <Property Name="ConsecutivoEspecialidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="120" Nullable="false" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbHorarioMedico">
+          <Key>
+            <PropertyRef Name="ConsecutivoHorario" />
+          </Key>
+          <Property Name="ConsecutivoHorario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConsecutivoMedico" Type="int" Nullable="false" />
+          <Property Name="DiaSemana" Type="tinyint" Nullable="false" />
+          <Property Name="HoraInicio" Type="time" Precision="0" Nullable="false" />
+          <Property Name="HoraFin" Type="time" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbMedico">
+          <Key>
+            <PropertyRef Name="ConsecutivoMedico" />
+          </Key>
+          <Property Name="ConsecutivoMedico" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="120" Nullable="false" />
+          <Property Name="Identificacion" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Correo" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="ConsecutivoUsuario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbMedicoEspecialidad">
+          <Key>
+            <PropertyRef Name="ConsecutivoMedico" />
+            <PropertyRef Name="ConsecutivoEspecialidad" />
+          </Key>
+          <Property Name="ConsecutivoMedico" Type="int" Nullable="false" />
+          <Property Name="ConsecutivoEspecialidad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbPerfil">
+          <Key>
+            <PropertyRef Name="ConsecutivoPerfil" />
+          </Key>
+          <Property Name="ConsecutivoPerfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbUsuario">
+          <Key>
+            <PropertyRef Name="ConsecutivoUsuario" />
+          </Key>
+          <Property Name="ConsecutivoUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Identificacion" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="120" Nullable="false" />
+          <Property Name="CorreoElectronico" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Contrasenna" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="ConsecutivoPerfil" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tbCita_Medico">
+          <End Role="tbMedico" Type="Self.tbMedico" Multiplicity="1" />
+          <End Role="tbCita" Type="Self.tbCita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbMedico">
+              <PropertyRef Name="ConsecutivoMedico" />
+            </Principal>
+            <Dependent Role="tbCita">
+              <PropertyRef Name="ConsecutivoMedico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbCita_Paciente">
+          <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="1" />
+          <End Role="tbCita" Type="Self.tbCita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUsuario">
+              <PropertyRef Name="ConsecutivoUsuario" />
+            </Principal>
+            <Dependent Role="tbCita">
+              <PropertyRef Name="ConsecutivoPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbErrorLog_Usuario">
+          <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="0..1" />
+          <End Role="tbErrorLog" Type="Self.tbErrorLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUsuario">
+              <PropertyRef Name="ConsecutivoUsuario" />
+            </Principal>
+            <Dependent Role="tbErrorLog">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbHorarioMedico_Medico">
+          <End Role="tbMedico" Type="Self.tbMedico" Multiplicity="1" />
+          <End Role="tbHorarioMedico" Type="Self.tbHorarioMedico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbMedico">
+              <PropertyRef Name="ConsecutivoMedico" />
+            </Principal>
+            <Dependent Role="tbHorarioMedico">
+              <PropertyRef Name="ConsecutivoMedico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbME_Especialidad">
+          <End Role="tbEspecialidad" Type="Self.tbEspecialidad" Multiplicity="1" />
+          <End Role="tbMedicoEspecialidad" Type="Self.tbMedicoEspecialidad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbEspecialidad">
+              <PropertyRef Name="ConsecutivoEspecialidad" />
+            </Principal>
+            <Dependent Role="tbMedicoEspecialidad">
+              <PropertyRef Name="ConsecutivoEspecialidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbME_Medico">
+          <End Role="tbMedico" Type="Self.tbMedico" Multiplicity="1" />
+          <End Role="tbMedicoEspecialidad" Type="Self.tbMedicoEspecialidad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbMedico">
+              <PropertyRef Name="ConsecutivoMedico" />
+            </Principal>
+            <Dependent Role="tbMedicoEspecialidad">
+              <PropertyRef Name="ConsecutivoMedico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbMedico_Usuario">
+          <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="1" />
+          <End Role="tbMedico" Type="Self.tbMedico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUsuario">
+              <PropertyRef Name="ConsecutivoUsuario" />
+            </Principal>
+            <Dependent Role="tbMedico">
+              <PropertyRef Name="ConsecutivoUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbUsuario_tbPerfil">
+          <End Role="tbPerfil" Type="Self.tbPerfil" Multiplicity="1" />
+          <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbPerfil">
+              <PropertyRef Name="ConsecutivoPerfil" />
+            </Principal>
+            <Dependent Role="tbUsuario">
+              <PropertyRef Name="ConsecutivoPerfil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_CancelarCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCita" Type="int" Mode="In" />
+          <Parameter Name="Motivo" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_CrearCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DoctorId" Type="int" Mode="In" />
+          <Parameter Name="PacienteId" Type="int" Mode="In" />
+          <Parameter Name="Fecha" Type="date" Mode="In" />
+          <Parameter Name="HoraInicio" Type="time" Mode="In" />
+          <Parameter Name="HoraFin" Type="time" Mode="In" />
+          <Parameter Name="Motivo" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_EditarCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCita" Type="int" Mode="In" />
+          <Parameter Name="DoctorId" Type="int" Mode="In" />
+          <Parameter Name="PacienteId" Type="int" Mode="In" />
+          <Parameter Name="Fecha" Type="date" Mode="In" />
+          <Parameter Name="HoraInicio" Type="time" Mode="In" />
+          <Parameter Name="HoraFin" Type="time" Mode="In" />
+          <Parameter Name="Motivo" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_GetCitas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_GetCitasPorDoctor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_InsertCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DoctorId" Type="int" Mode="In" />
+          <Parameter Name="PacienteId" Type="int" Mode="In" />
+          <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
+          <Parameter Name="FechaFin" Type="datetime" Mode="In" />
+          <Parameter Name="Motivo" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_MarcarCitaAtendida" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCita" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_UpdateCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoCita" Type="int" Mode="In" />
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
+          <Parameter Name="Fecha" Type="date" Mode="In" />
+          <Parameter Name="HoraInicio" Type="time" Mode="In" />
+          <Parameter Name="HoraFin" Type="time" Mode="In" />
+          <Parameter Name="Observaciones" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ValidarSolapeCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MedicoId" Type="int" Mode="In" />
+          <Parameter Name="Fecha" Type="date" Mode="In" />
+          <Parameter Name="HoraInicio" Type="time" Mode="In" />
+          <Parameter Name="HoraFin" Type="time" Mode="In" />
+        </Function>
+        <EntityContainer Name="BDCitasMedicasModelStoreContainer">
+          <EntitySet Name="tbCita" EntityType="Self.tbCita" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbErrorLog" EntityType="Self.tbErrorLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbEspecialidad" EntityType="Self.tbEspecialidad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbHorarioMedico" EntityType="Self.tbHorarioMedico" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbMedico" EntityType="Self.tbMedico" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbMedicoEspecialidad" EntityType="Self.tbMedicoEspecialidad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tbCita_Medico" Association="Self.FK_tbCita_Medico">
+            <End Role="tbMedico" EntitySet="tbMedico" />
+            <End Role="tbCita" EntitySet="tbCita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbCita_Paciente" Association="Self.FK_tbCita_Paciente">
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+            <End Role="tbCita" EntitySet="tbCita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbErrorLog_Usuario" Association="Self.FK_tbErrorLog_Usuario">
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+            <End Role="tbErrorLog" EntitySet="tbErrorLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbHorarioMedico_Medico" Association="Self.FK_tbHorarioMedico_Medico">
+            <End Role="tbMedico" EntitySet="tbMedico" />
+            <End Role="tbHorarioMedico" EntitySet="tbHorarioMedico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbME_Especialidad" Association="Self.FK_tbME_Especialidad">
+            <End Role="tbEspecialidad" EntitySet="tbEspecialidad" />
+            <End Role="tbMedicoEspecialidad" EntitySet="tbMedicoEspecialidad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbME_Medico" Association="Self.FK_tbME_Medico">
+            <End Role="tbMedico" EntitySet="tbMedico" />
+            <End Role="tbMedicoEspecialidad" EntitySet="tbMedicoEspecialidad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbMedico_Usuario" Association="Self.FK_tbMedico_Usuario">
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+            <End Role="tbMedico" EntitySet="tbMedico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbUsuario_tbPerfil" Association="Self.FK_tbUsuario_tbPerfil">
+            <End Role="tbPerfil" EntitySet="tbPerfil" />
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BDCitasMedicasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbCita">
+          <Key>
+            <PropertyRef Name="ConsecutivoCita" />
+          </Key>
+          <Property Name="ConsecutivoCita" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConsecutivoPaciente" Type="Int32" Nullable="false" />
+          <Property Name="ConsecutivoMedico" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HoraInicio" Type="Time" Nullable="false" Precision="0" />
+          <Property Name="HoraFin" Type="Time" Nullable="false" Precision="0" />
+          <Property Name="Estado" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Observaciones" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbMedico" Relationship="Self.FK_tbCita_Medico" FromRole="tbCita" ToRole="tbMedico" />
+          <NavigationProperty Name="tbUsuario" Relationship="Self.FK_tbCita_Paciente" FromRole="tbCita" ToRole="tbUsuario" />
+        </EntityType>
+        <EntityType Name="tbErrorLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaHora" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UsuarioId" Type="Int32" />
+          <Property Name="Area" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Controlador" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Accion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mensaje" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StackTrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DataJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbUsuario" Relationship="Self.FK_tbErrorLog_Usuario" FromRole="tbErrorLog" ToRole="tbUsuario" />
+        </EntityType>
+        <EntityType Name="tbEspecialidad">
+          <Key>
+            <PropertyRef Name="ConsecutivoEspecialidad" />
+          </Key>
+          <Property Name="ConsecutivoEspecialidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="120" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tbMedico" Relationship="Self.tbMedicoEspecialidad" FromRole="tbEspecialidad" ToRole="tbMedico" />
+        </EntityType>
+        <EntityType Name="tbHorarioMedico">
+          <Key>
+            <PropertyRef Name="ConsecutivoHorario" />
+          </Key>
+          <Property Name="ConsecutivoHorario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConsecutivoMedico" Type="Int32" Nullable="false" />
+          <Property Name="DiaSemana" Type="Byte" Nullable="false" />
+          <Property Name="HoraInicio" Type="Time" Nullable="false" Precision="0" />
+          <Property Name="HoraFin" Type="Time" Nullable="false" Precision="0" />
+          <NavigationProperty Name="tbMedico" Relationship="Self.FK_tbHorarioMedico_Medico" FromRole="tbHorarioMedico" ToRole="tbMedico" />
+        </EntityType>
+        <EntityType Name="tbMedico">
+          <Key>
+            <PropertyRef Name="ConsecutivoMedico" />
+          </Key>
+          <Property Name="ConsecutivoMedico" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="120" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Identificacion" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="ConsecutivoUsuario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tbCita" Relationship="Self.FK_tbCita_Medico" FromRole="tbMedico" ToRole="tbCita" />
+          <NavigationProperty Name="tbHorarioMedico" Relationship="Self.FK_tbHorarioMedico_Medico" FromRole="tbMedico" ToRole="tbHorarioMedico" />
+          <NavigationProperty Name="tbUsuario" Relationship="Self.FK_tbMedico_Usuario" FromRole="tbMedico" ToRole="tbUsuario" />
+          <NavigationProperty Name="tbEspecialidad" Relationship="Self.tbMedicoEspecialidad" FromRole="tbMedico" ToRole="tbEspecialidad" />
+        </EntityType>
+        <EntityType Name="tbPerfil">
+          <Key>
+            <PropertyRef Name="ConsecutivoPerfil" />
+          </Key>
+          <Property Name="ConsecutivoPerfil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tbUsuario" Relationship="Self.FK_tbUsuario_tbPerfil" FromRole="tbPerfil" ToRole="tbUsuario" />
+        </EntityType>
+        <EntityType Name="tbUsuario">
+          <Key>
+            <PropertyRef Name="ConsecutivoUsuario" />
+          </Key>
+          <Property Name="ConsecutivoUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Identificacion" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="120" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CorreoElectronico" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Contrasenna" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="ConsecutivoPerfil" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tbCita" Relationship="Self.FK_tbCita_Paciente" FromRole="tbUsuario" ToRole="tbCita" />
+          <NavigationProperty Name="tbErrorLog" Relationship="Self.FK_tbErrorLog_Usuario" FromRole="tbUsuario" ToRole="tbErrorLog" />
+          <NavigationProperty Name="tbMedico" Relationship="Self.FK_tbMedico_Usuario" FromRole="tbUsuario" ToRole="tbMedico" />
+          <NavigationProperty Name="tbPerfil" Relationship="Self.FK_tbUsuario_tbPerfil" FromRole="tbUsuario" ToRole="tbPerfil" />
+        </EntityType>
+        <Association Name="FK_tbCita_Medico">
+          <End Role="tbMedico" Type="Self.tbMedico" Multiplicity="1" />
+          <End Role="tbCita" Type="Self.tbCita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbMedico">
+              <PropertyRef Name="ConsecutivoMedico" />
+            </Principal>
+            <Dependent Role="tbCita">
+              <PropertyRef Name="ConsecutivoMedico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbCita_Paciente">
+          <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="1" />
+          <End Role="tbCita" Type="Self.tbCita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUsuario">
+              <PropertyRef Name="ConsecutivoUsuario" />
+            </Principal>
+            <Dependent Role="tbCita">
+              <PropertyRef Name="ConsecutivoPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbErrorLog_Usuario">
+          <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="0..1" />
+          <End Role="tbErrorLog" Type="Self.tbErrorLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUsuario">
+              <PropertyRef Name="ConsecutivoUsuario" />
+            </Principal>
+            <Dependent Role="tbErrorLog">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbHorarioMedico_Medico">
+          <End Role="tbMedico" Type="Self.tbMedico" Multiplicity="1" />
+          <End Role="tbHorarioMedico" Type="Self.tbHorarioMedico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbMedico">
+              <PropertyRef Name="ConsecutivoMedico" />
+            </Principal>
+            <Dependent Role="tbHorarioMedico">
+              <PropertyRef Name="ConsecutivoMedico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbMedico_Usuario">
+          <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="1" />
+          <End Role="tbMedico" Type="Self.tbMedico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUsuario">
+              <PropertyRef Name="ConsecutivoUsuario" />
+            </Principal>
+            <Dependent Role="tbMedico">
+              <PropertyRef Name="ConsecutivoUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbUsuario_tbPerfil">
+          <End Role="tbPerfil" Type="Self.tbPerfil" Multiplicity="1" />
+          <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbPerfil">
+              <PropertyRef Name="ConsecutivoPerfil" />
+            </Principal>
+            <Dependent Role="tbUsuario">
+              <PropertyRef Name="ConsecutivoPerfil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tbMedicoEspecialidad">
+          <End Role="tbEspecialidad" Type="Self.tbEspecialidad" Multiplicity="*" />
+          <End Role="tbMedico" Type="Self.tbMedico" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="BDCitasMedicasEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbCita" EntityType="Self.tbCita" />
+          <EntitySet Name="tbErrorLog" EntityType="Self.tbErrorLog" />
+          <EntitySet Name="tbEspecialidad" EntityType="Self.tbEspecialidad" />
+          <EntitySet Name="tbHorarioMedico" EntityType="Self.tbHorarioMedico" />
+          <EntitySet Name="tbMedico" EntityType="Self.tbMedico" />
+          <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" />
+          <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" />
+          <AssociationSet Name="FK_tbCita_Medico" Association="Self.FK_tbCita_Medico">
+            <End Role="tbMedico" EntitySet="tbMedico" />
+            <End Role="tbCita" EntitySet="tbCita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbCita_Paciente" Association="Self.FK_tbCita_Paciente">
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+            <End Role="tbCita" EntitySet="tbCita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbErrorLog_Usuario" Association="Self.FK_tbErrorLog_Usuario">
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+            <End Role="tbErrorLog" EntitySet="tbErrorLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbHorarioMedico_Medico" Association="Self.FK_tbHorarioMedico_Medico">
+            <End Role="tbMedico" EntitySet="tbMedico" />
+            <End Role="tbHorarioMedico" EntitySet="tbHorarioMedico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbMedico_Usuario" Association="Self.FK_tbMedico_Usuario">
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+            <End Role="tbMedico" EntitySet="tbMedico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbUsuario_tbPerfil" Association="Self.FK_tbUsuario_tbPerfil">
+            <End Role="tbPerfil" EntitySet="tbPerfil" />
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="tbMedicoEspecialidad" Association="Self.tbMedicoEspecialidad">
+            <End Role="tbEspecialidad" EntitySet="tbEspecialidad" />
+            <End Role="tbMedico" EntitySet="tbMedico" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BDCitasMedicasModelStoreContainer" CdmEntityContainer="BDCitasMedicasEntities1">
+          <EntitySetMapping Name="tbCita">
+            <EntityTypeMapping TypeName="BDCitasMedicasModel.tbCita">
+              <MappingFragment StoreEntitySet="tbCita">
+                <ScalarProperty Name="ConsecutivoCita" ColumnName="ConsecutivoCita" />
+                <ScalarProperty Name="ConsecutivoPaciente" ColumnName="ConsecutivoPaciente" />
+                <ScalarProperty Name="ConsecutivoMedico" ColumnName="ConsecutivoMedico" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="HoraInicio" ColumnName="HoraInicio" />
+                <ScalarProperty Name="HoraFin" ColumnName="HoraFin" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbErrorLog">
+            <EntityTypeMapping TypeName="BDCitasMedicasModel.tbErrorLog">
+              <MappingFragment StoreEntitySet="tbErrorLog">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="Controlador" ColumnName="Controlador" />
+                <ScalarProperty Name="Accion" ColumnName="Accion" />
+                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+                <ScalarProperty Name="DataJson" ColumnName="DataJson" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbEspecialidad">
+            <EntityTypeMapping TypeName="BDCitasMedicasModel.tbEspecialidad">
+              <MappingFragment StoreEntitySet="tbEspecialidad">
+                <ScalarProperty Name="ConsecutivoEspecialidad" ColumnName="ConsecutivoEspecialidad" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbHorarioMedico">
+            <EntityTypeMapping TypeName="BDCitasMedicasModel.tbHorarioMedico">
+              <MappingFragment StoreEntitySet="tbHorarioMedico">
+                <ScalarProperty Name="ConsecutivoHorario" ColumnName="ConsecutivoHorario" />
+                <ScalarProperty Name="ConsecutivoMedico" ColumnName="ConsecutivoMedico" />
+                <ScalarProperty Name="DiaSemana" ColumnName="DiaSemana" />
+                <ScalarProperty Name="HoraInicio" ColumnName="HoraInicio" />
+                <ScalarProperty Name="HoraFin" ColumnName="HoraFin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbMedico">
+            <EntityTypeMapping TypeName="BDCitasMedicasModel.tbMedico">
+              <MappingFragment StoreEntitySet="tbMedico">
+                <ScalarProperty Name="ConsecutivoMedico" ColumnName="ConsecutivoMedico" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="ConsecutivoUsuario" ColumnName="ConsecutivoUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbPerfil">
+            <EntityTypeMapping TypeName="BDCitasMedicasModel.tbPerfil">
+              <MappingFragment StoreEntitySet="tbPerfil">
+                <ScalarProperty Name="ConsecutivoPerfil" ColumnName="ConsecutivoPerfil" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbUsuario">
+            <EntityTypeMapping TypeName="BDCitasMedicasModel.tbUsuario">
+              <MappingFragment StoreEntitySet="tbUsuario">
+                <ScalarProperty Name="ConsecutivoUsuario" ColumnName="ConsecutivoUsuario" />
+                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
+                <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="ConsecutivoPerfil" ColumnName="ConsecutivoPerfil" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="tbMedicoEspecialidad" TypeName="BDCitasMedicasModel.tbMedicoEspecialidad" StoreEntitySet="tbMedicoEspecialidad">
+            <EndProperty Name="tbEspecialidad">
+              <ScalarProperty Name="ConsecutivoEspecialidad" ColumnName="ConsecutivoEspecialidad" />
+            </EndProperty>
+            <EndProperty Name="tbMedico">
+              <ScalarProperty Name="ConsecutivoMedico" ColumnName="ConsecutivoMedico" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

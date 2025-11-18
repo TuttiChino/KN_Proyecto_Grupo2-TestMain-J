@@ -1,0 +1,103 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    ViewBag.Title = "Inicio | Doctor";
+    var nombre = (Session["NombreUsuario"] as string) ?? "Doctor";
+}
+
+<div class="container mt-4">
+
+    <!-- Encabezado -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:52px;height:52px;">
+                <i class="bi bi-stethoscope" style="font-size:1.4rem;"></i>
+            </div>
+            <div>
+                <h2 class="m-0">Bienvenido, Dr. @nombre</h2>
+                <div class="text-muted">Panel de control y agenda</div>
+            </div>
+        </div>
+
+        <div class="text-end">
+            <div class="fw-semibold">Hoy</div>
+            <div id="fecha-hoy" class="text-muted"></div>
+        </div>
+    </div>
+
+    <!-- Acciones rápidas -->
+    <div class="row g-3 mb-4">
+        <!-- Ver agenda del doctor -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <div class="rounded bg-primary text-white d-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+                            <i class="bi bi-calendar-week" style="font-size:1.2rem;"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title m-0">Mi agenda</h5>
+                            <small class="text-muted">Ver todas mis citas</small>
+                        </div>
+                    </div>
+                    <p class="mb-3">Consulta tu agenda completa, filtra por fecha y administra cada cita.</p>
+                    <a href="@Url.Action("Index","Doctor")" class="btn btn-primary w-100">
+                        Ver agenda
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ver citas próximas -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <div class="rounded bg-success text-white d-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+                            <i class="bi bi-clock-history" style="font-size:1.2rem;"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title m-0">Citas próximas</h5>
+                        </div>
+                    </div>
+                    <p class="mb-3">Accede rápidamente a las citas programadas para fechas próximas.</p>
+                    <a href="@Url.Action("CitasDoctor","Citas", new { hoy = 1 })" class="btn btn-success w-100">
+                        Ver próximas
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agendar cita (si el doctor puede crear) -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <div class="rounded bg-warning text-dark d-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+                            <i class="bi bi-plus-circle" style="font-size:1.2rem;"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title m-0">Nueva cita</h5>
+                            <small class="text-muted">Agendar una nueva atención</small>
+                        </div>
+                    </div>
+                    <p class="mb-3">Crea una cita indicando paciente, rango horario y motivo.</p>
+                    <a href="@Url.Action("NuevaCita","Doctor")" class="btn btn-warning w-100">
+                        Agendar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    (function () {
+        var el = document.getElementById('fecha-hoy');
+        if (el) {
+            var f = new Date();
+            var opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+            try { el.innerText = f.toLocaleDateString('es-ES', opciones); } catch (e) { el.innerText = f.toDateString(); }
+        }
+    })();
+</script>

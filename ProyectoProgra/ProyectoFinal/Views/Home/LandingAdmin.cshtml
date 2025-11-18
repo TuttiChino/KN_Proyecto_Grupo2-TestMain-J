@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    ViewBag.Title = "Inicio | Admin";
+}
+<div class="container mt-3">
+    <h2>Panel de Administración</h2>
+    <ul class="list-unstyled">
+        <li>@Html.ActionLink("Catálogo de Médicos", "Medicos", "Admin")</li>
+        <li>@Html.ActionLink("Especialidades", "Especialidades", "Admin")</li>
+        <li>@Html.ActionLink("Horarios", "Horarios", "Admin")</li>
+        <li>@Html.ActionLink("Usuarios", "Usuarios", "Admin")</li>
+        <li>@Html.ActionLink("Reportes", "Reportes", "Admin")</li>
+    </ul>
+</div>

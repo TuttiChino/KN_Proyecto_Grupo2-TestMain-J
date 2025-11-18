@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+
+    <!-- Fuentes y estilos del tema -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/StaticFiles/css/bootstrap.css">
+    <link rel="stylesheet" href="~/StaticFiles/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/StaticFiles/css/app.css">
+    <link rel="stylesheet" href="~/StaticFiles/css/auth.css">
+
+    <style>
+        /* Azul */
+        .bg-primary {
+            background-color: #435ebe !important;
+        }
+
+            .bg-primary:hover {
+                background-color: #3a4fb8 !important;
+            }
+
+        .topbar {
+            color: #fff;
+            box-shadow: 0 1px 0 rgba(0,0,0,.06);
+        }
+
+            .topbar .brand {
+                font-weight: 700;
+                letter-spacing: .3px;
+            }
+
+            .topbar a,
+            .topbar .nav-link {
+                color: #fff !important;
+                text-decoration: none;
+                padding: .5rem .75rem;
+                display: inline-block;
+            }
+
+                .topbar a:hover,
+                .topbar .nav-link:hover {
+                    text-decoration: underline;
+                }
+
+            .topbar .nav {
+                display: flex;
+                align-items: center;
+                gap: .25rem;
+                flex-wrap: wrap; /* que no se rompa en mobile */
+            }
+
+        /* Espaciado del contenido (header no es fixed) */
+        .page-wrap {
+            padding-top: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header simple -->
+    <header class="topbar bg-primary">
+        <div class="container d-flex align-items-center justify-content-between py-2">
+            <div class="d-flex align-items-center">
+                <a class="brand me-3" href="@Url.Action("Landing","Home")">Citas Médicas</a>
+                <nav class="nav">
+                    <a class="nav-link" href="@Url.Action("Landing","Home")">Inicio</a>
+
+                    @* Menú por rol (opcional, ya funciona si hay sesión) *@
+                    @if ((Session["PerfilUsuario"] as string ?? "").Equals("Admin", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        <a class="nav-link" href="@Url.Action("Medicos","Admin")">Catálogos</a>
+                        <a class="nav-link" href="@Url.Action("Usuarios","Admin")">Usuarios</a>
+                        <a class="nav-link" href="@Url.Action("Reportes","Admin")">Reportes</a>
+                    }
+                    @if ((Session["PerfilUsuario"] as string ?? "").Equals("Doctor", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        <a class="nav-link" href="@Url.Action("Index","CitasDoctor")">Mi Agenda</a>
+                    }
+                    @if ((Session["PerfilUsuario"] as string ?? "").Equals("Paciente", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        <a class="nav-link" href="@Url.Action("Index","CitasPaciente")">Mis Citas</a>
+                        <a class="nav-link" href="@Url.Action("Crear","CitasPaciente")">Agendar</a>
+                    }
+                </nav>
+            </div>
+
+            <div class="d-flex align-items-center">
+                @if (Session["ConsecutivoUsuario"] == null)
+                {
+                    <a class="nav-link" href="@Url.Action("Index","Home")">Login</a>
+                    <a class="nav-link" href="@Url.Action("Registro","Home")">Registro</a>
+                }
+                else
+                {
+                    <span class="me-2">Hola, @((Session["NombreUsuario"] as string) ?? "Usuario")</span>
+                    <a class="nav-link" href="@Url.Action("Logout","Home")">Salir</a>
+                }
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido -->
+    <main class="page-wrap container-xxl">
+        @RenderBody()
+    </main>
+
+    <!-- Footer azul -->
+    <footer class="bg-primary text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="mb-3">Gestor de Citas Médicas</h5>
+                    <p class="mb-0">Sistema de gestión integral para citas médicas</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">
+                        <i class="bi bi-envelope me-2"></i>
+                        contacto@citasmedicas.com
+                    </p>
+                    <p class="mb-0">
+                        <i class="bi bi-telephone me-2"></i>
+                        +1 (555) 123-4567
+                    </p>
+                </div>
+            </div>
+            <hr class="my-3" style="border-color: rgba(255,255,255,0.3);">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; @DateTime.Now.Year Gestor de Citas Médicas. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

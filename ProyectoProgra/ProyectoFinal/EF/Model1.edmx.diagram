@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3e43729554fa49efb93a8bf3975c7227" Name="Diagram1">
+        <EntityTypeShape EntityType="BDCitasMedicasModel.tbCita" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDCitasMedicasModel.tbErrorLog" Width="1.5" PointX="5.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDCitasMedicasModel.tbEspecialidad" Width="1.5" PointX="6" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDCitasMedicasModel.tbHorarioMedico" Width="1.5" PointX="10.5" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDCitasMedicasModel.tbMedico" Width="1.5" PointX="8.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDCitasMedicasModel.tbPerfil" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDCitasMedicasModel.tbUsuario" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <AssociationConnector Association="BDCitasMedicasModel.FK_tbCita_Medico" ManuallyRouted="false" />
+        <AssociationConnector Association="BDCitasMedicasModel.FK_tbCita_Paciente" ManuallyRouted="false" />
+        <AssociationConnector Association="BDCitasMedicasModel.FK_tbErrorLog_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="BDCitasMedicasModel.FK_tbHorarioMedico_Medico" ManuallyRouted="false" />
+        <AssociationConnector Association="BDCitasMedicasModel.FK_tbMedico_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="BDCitasMedicasModel.FK_tbUsuario_tbPerfil" ManuallyRouted="false" />
+        <AssociationConnector Association="BDCitasMedicasModel.tbMedicoEspecialidad" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
