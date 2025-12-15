@@ -1,0 +1,75 @@
+﻿@model ProyectoFinal.Models.PerfilPacienteDto
+
+@{
+    ViewBag.Title = "Mi Perfil";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<div class="card shadow p-4 mt-4">
+    <h2 class="text-primary mb-3">
+        <i class="bi bi-person-circle me-2"></i> Mi Perfil
+    </h2>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @using (Html.BeginForm("Perfil", "Citas", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h5 class="mb-3">
+                    <i class="bi bi-person-badge me-2"></i>Datos personales
+                </h5>
+
+                <div class="mb-3">
+                    <label class="form-label">Identificación</label>
+                    <input class="form-control" value="@Model.Identificacion" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input class="form-control" value="@Model.Nombre" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Correo electrónico</label>
+                    <input class="form-control" value="@Model.CorreoElectronico" readonly />
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h5 class="mb-3">
+                    <i class="bi bi-key-fill me-2"></i>Cambiar contraseña
+                </h5>
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.ContrasenaActual, new { @class = "form-label" })
+                    @Html.PasswordFor(m => m.ContrasenaActual, new { @class = "form-control" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.ContrasenaNueva, new { @class = "form-label" })
+                    @Html.PasswordFor(m => m.ContrasenaNueva, new { @class = "form-control" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.ConfirmarContrasena, new { @class = "form-label" })
+                    @Html.PasswordFor(m => m.ConfirmarContrasena, new { @class = "form-control" })
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-2">
+                    <i class="bi bi-save"></i> Guardar cambios
+                </button>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,71 @@
+@model ProyectoFinal.Models.UsuarioDto
+
+@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    ViewBag.Title = "Crear Médico";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <h3 class="fw-bold text-primary mb-3">
+                <i class="bi bi-person-plus"></i> Nuevo Médico
+            </h3>
+            <p class="text-muted mb-4">
+                Complete la información del médico para registrarlo en el sistema.
+            </p>
+
+            @using (Html.BeginForm("CrearMedico", "Admin", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(m => m.ConsecutivoPerfil) <!-- se rellena en el GET -->
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Identificación</label>
+                        @Html.TextBoxFor(m => m.Identificacion, new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Nombre completo</label>
+                        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Correo electrónico</label>
+                        @Html.TextBoxFor(m => m.CorreoElectronico, new { @class = "form-control", type = "email", required = "required" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Contraseña</label>
+                        @Html.PasswordFor(m => m.Contrasenna, new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Estado</label>
+                        @Html.DropDownListFor(m => m.Estado,
+                            new SelectList(new[]
+                            {
+                                new { Value = true, Text = "Activo" },
+                                new { Value = false, Text = "Inactivo" }
+                            }, "Value", "Text"),
+                            new { @class = "form-select" })
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="@Url.Action("Medicos", "Admin")" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Registrar Médico
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

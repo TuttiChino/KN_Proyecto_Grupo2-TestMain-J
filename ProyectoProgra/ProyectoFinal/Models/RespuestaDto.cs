@@ -1,9 +1,8 @@
 ﻿namespace ProyectoFinal.Models
 {
-    public class ResultadoSP
+    public class RespuestaDto
     {
         public int Codigo { get; set; }
         public string Mensaje { get; set; }
-        public int ConsecutivoUsuario { get; set; }
     }
 }

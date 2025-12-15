@@ -322,4 +322,105 @@ BEGIN
 END;
 GO
 
+--ListarEspecialidades
+
+CREATE OR ALTER PROCEDURE dbo.sp_ListarEspecialidades
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        ConsecutivoEspecialidad,
+        Nombre,
+        Estado
+    FROM tbEspecialidad
+END
+
+--CrearEspecialidad
+
+CREATE OR ALTER PROCEDURE dbo.sp_CrearEspecialidad
+    @Nombre NVARCHAR(120)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO tbEspecialidad (Nombre, Estado)
+    VALUES (@Nombre, 1)
+END
+
+--EditarEspecialidad
+
+CREATE OR ALTER PROCEDURE dbo.sp_EditarEspecialidad
+    @ConsecutivoEspecialidad INT,
+    @Nombre NVARCHAR(120),
+    @Estado BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE tbEspecialidad
+    SET
+        Nombre = @Nombre,
+        Estado = @Estado
+    WHERE ConsecutivoEspecialidad = @ConsecutivoEspecialidad
+END
+
+--EliminarEspecialidad
+
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarEspecialidad
+    @ConsecutivoEspecialidad INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE tbEspecialidad
+    SET Estado = 0
+    WHERE ConsecutivoEspecialidad = @ConsecutivoEspecialidad
+END
+
+--ListarEspecialidadesPorMedico
+
+CREATE OR ALTER PROCEDURE dbo.sp_ListarEspecialidadesPorMedico
+    @ConsecutivoMedico INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+    me.ConsecutivoMedico,
+    me.ConsecutivoEspecialidad,
+    e.Nombre AS NombreEspecialidad
+FROM tbMedicoEspecialidad me
+JOIN tbEspecialidad e 
+    ON e.ConsecutivoEspecialidad = me.ConsecutivoEspecialidad
+WHERE me.ConsecutivoMedico = @ConsecutivoMedico
+END
+
+--AgregarEspecialidadMedico
+
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarEspecialidadMedico
+    @ConsecutivoMedico INT,
+    @ConsecutivoEspecialidad INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM tbMedicoEspecialidad
+        WHERE ConsecutivoMedico = @ConsecutivoMedico
+          AND ConsecutivoEspecialidad = @ConsecutivoEspecialidad
+    )
+    BEGIN
+        INSERT INTO tbMedicoEspecialidad (
+            ConsecutivoMedico,
+            ConsecutivoEspecialidad
+        )
+        VALUES (
+            @ConsecutivoMedico,
+            @ConsecutivoEspecialidad
+        )
+    END
+END
+
 

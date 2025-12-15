@@ -8,7 +8,7 @@ namespace ProyectoFinal.Controllers
 {
     public class DoctorController : Controller
     {
-        private BDCitasMedicasEntities1 db = new BDCitasMedicasEntities1();
+        private BDCitasMedicasEntities db = new BDCitasMedicasEntities();
 
 
         // Listado de Citas del doctor

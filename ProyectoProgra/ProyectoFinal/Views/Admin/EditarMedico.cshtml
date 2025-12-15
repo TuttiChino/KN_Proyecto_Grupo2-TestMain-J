@@ -1,0 +1,61 @@
+@model ProyectoFinal.Models.MedicoDto
+
+@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    ViewBag.Title = "Editar Médico";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h3 class="fw-bold text-primary mb-3">
+                <i class="bi bi-pencil-square"></i> Editar Médico
+            </h3>
+
+            @using (Html.BeginForm("EditarMedico", "Admin", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.ConsecutivoMedico)
+                @Html.HiddenFor(m => m.ConsecutivoUsuario)
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Identificación</label>
+                        @Html.TextBoxFor(m => m.Identificacion, new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Nombre completo</label>
+                        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Correo</label>
+                        @Html.TextBoxFor(m => m.CorreoElectronico, new { @class = "form-control", type = "email", required = "required" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Estado</label>
+                        @Html.DropDownListFor(m => m.Estado,
+                            new SelectList(new[]
+                            {
+                                new { Value = true, Text = "Activo" },
+                                new { Value = false, Text = "Inactivo" }
+                            }, "Value", "Text"),
+                            new { @class = "form-select" })
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="@Url.Action("Medicos", "Admin")" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Guardar cambios
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

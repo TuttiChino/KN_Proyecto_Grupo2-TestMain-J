@@ -1,25 +1,58 @@
+@model IEnumerable<ProyectoFinal.Models.EspecialidadDto>
 @{
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
-    ViewBag.Title = "Especialidades | Admin";
+    ViewBag.Title = "Especialidades";
 }
 
 <div class="container mt-4">
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <h2>Especialidades</h2>
-        </div>
+    <h2 class="mb-3">Especialidades</h2>
+
+    <div class="mb-3">
+        <a href="@Url.Action("EspecialidadesMedico","Admin")"
+           class="btn btn-outline-primary mb-3">
+            Asignar especialidades a médicos
+        </a>
     </div>
 
-    <div class="card">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="card mb-4">
         <div class="card-body">
-            <div class="alert alert-info">
-                <i class="bi bi-info-circle"></i> Esta funcionalidad estar&aacute; disponible pr&oacute;ximamente.
-            </div>
-            <p>El m&oacute;dulo de gesti&oacute;n de especialidades se encuentra en desarrollo.</p>
-            <a href="@Url.Action("Landing", "Home")" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Volver al Panel
-            </a>
+            <form method="post" action="@Url.Action("CrearEspecialidad","Admin")">
+                <div class="input-group">
+                    <input type="text" name="nombre" class="form-control" placeholder="Nueva especialidad" required />
+                    <button class="btn btn-primary">Agregar</button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
 
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model)
+            {
+                <tr>
+                    <td>@e.Nombre</td>
+                    <td>@(e.Estado ? "Activo" : "Inactivo")</td>
+                    <td>
+                        <a href="@Url.Action("EliminarEspecialidad","Admin", new { id = e.ConsecutivoEspecialidad })"
+                           class="btn btn-danger btn-sm">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -254,5 +254,59 @@ namespace ProyectoFinal.Controllers
             }
         }
 
+        private readonly PacienteService _pacienteService = new PacienteService();
+
+
+        [HttpGet]
+        public ActionResult Perfil()
+        {
+            int idUsuario = Convert.ToInt32(Session["ConsecutivoUsuario"]);
+            var model = _pacienteService.ObtenerPerfil(idUsuario);
+            if (model == null)
+            {
+                ViewBag.Error = "No se encontró el perfil del usuario.";
+                model = new PerfilPacienteDto();
+            }
+            return View(model);  // Usa Views/Citas/Perfil.cshtml
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Perfil(PerfilPacienteDto model)
+        {
+            if (string.IsNullOrWhiteSpace(model.ContrasenaActual) ||
+                string.IsNullOrWhiteSpace(model.ContrasenaNueva) ||
+                string.IsNullOrWhiteSpace(model.ConfirmarContrasena))
+            {
+                ModelState.AddModelError("", "Complete todos los campos de contraseña.");
+                return View(model);
+            }
+
+            if (model.ContrasenaNueva != model.ConfirmarContrasena)
+            {
+                ModelState.AddModelError("", "Las contraseñas nuevas no coinciden.");
+                return View(model);
+            }
+
+            int idUsuario = Convert.ToInt32(Session["ConsecutivoUsuario"]);
+            var res = _pacienteService.CambiarContrasena(idUsuario, model.ContrasenaActual, model.ContrasenaNueva);
+
+            if (res.Codigo == 1)
+            {
+                TempData["Success"] = res.Mensaje;
+
+                var perfilActualizado = _pacienteService.ObtenerPerfil(idUsuario);
+                perfilActualizado.ContrasenaActual =
+                    perfilActualizado.ContrasenaNueva =
+                    perfilActualizado.ConfirmarContrasena = string.Empty;
+
+                return View(perfilActualizado);
+            }
+
+            ModelState.AddModelError("", res.Mensaje);
+            return View(model);
+        }
+
+
     }
 }

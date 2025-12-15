@@ -125,17 +125,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CitasController.cs" />
-    <Compile Include="Controllers\CitasDoctorController.cs" />
-    <Compile Include="Controllers\CitasPacienteController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PacientesController.cs" />
     <Compile Include="EF\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\Model1.Context1.cs" />
     <Compile Include="EF\Model1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -171,10 +167,23 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EspecialidadesMedicoDto.cs" />
+    <Compile Include="Models\MedicoEspecialidadDto.cs" />
+    <Compile Include="Models\EspecialidadesDto.cs" />
+    <Compile Include="Models\HorarioMedicoDto.cs" />
+    <Compile Include="Models\MedicoDto.cs" />
+    <Compile Include="Models\EspecialidadesMedicoVM.cs" />
+    <Compile Include="Models\UsuarioDto.cs" />
+    <Compile Include="Models\RespuestaDto.cs" />
+    <Compile Include="Models\PerfilPacienteDto.cs" />
     <Compile Include="Models\CitaDto.cs" />
     <Compile Include="Models\ResultadoSP.cs" />
     <Compile Include="Models\ValidarSolapeCitaResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\EspecialidadService.cs" />
+    <Compile Include="Services\MedicoService.cs" />
+    <Compile Include="Services\UsuarioService.cs" />
+    <Compile Include="Services\PacienteService.cs" />
     <Compile Include="Services\CitaService.cs" />
     <Compile Include="Services\NotificationService.cs" />
   </ItemGroup>
@@ -200,7 +209,6 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="EF\Model1.Designer.vb" />
     <Content Include="EF\Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
@@ -259,7 +267,6 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\LandingAdmin.cshtml" />
-    <Content Include="Views\Home\LandingDoctor.cshtml" />
     <Content Include="Views\Home\LandingPaciente.cshtml" />
     <Content Include="Views\Doctor\EditarCita.cshtml" />
     <Content Include="Views\Doctor\Index.cshtml" />
@@ -274,10 +281,13 @@
     <Content Include="Views\Citas\CrearCita.cshtml" />
     <Content Include="Views\Citas\EditarCita.cshtml" />
     <Content Include="Views\Citas\MainC.cshtml" />
-    <Content Include="Views\Pacientes\Crear.cshtml" />
-    <Content Include="Views\Pacientes\Detalles.cshtml" />
-    <Content Include="Views\Pacientes\Editar.cshtml" />
-    <Content Include="Views\Pacientes\Index.cshtml" />
+    <Content Include="Views\Home\LandingDoctor.cshtml" />
+    <Content Include="Views\Citas\Perfil.cshtml" />
+    <Content Include="Views\Admin\CrearMedico.cshtml" />
+    <Content Include="Views\Admin\EditarMedico.cshtml" />
+    <Content Include="Views\Admin\HorariosMedicos.cshtml" />
+    <Content Include="Views\Admin\HorariosMedico.cshtml" />
+    <Content Include="Views\Admin\EspecialidadesMedico.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

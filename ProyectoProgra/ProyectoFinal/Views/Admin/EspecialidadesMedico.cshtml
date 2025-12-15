@@ -1,0 +1,141 @@
+@model ProyectoFinal.Models.EspecialidadesMedicoVM
+
+@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    ViewBag.Title = "Asignación de Especialidades";
+}
+
+<div class="container mt-4">
+
+    <!-- ENCABEZADO -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="fw-bold mb-0">Asignar especialidades</h2>
+
+            @if (Model.ConsecutivoMedicoSeleccionado.HasValue)
+            {
+                var medicoSeleccionado = Model.Medicos
+                    .FirstOrDefault(m => m.ConsecutivoMedico == Model.ConsecutivoMedicoSeleccionado);
+
+                if (medicoSeleccionado != null)
+                {
+                    <span class="text-muted">
+                        Médico seleccionado:
+                        <strong>@medicoSeleccionado.Nombre</strong>
+                    </span>
+                }
+            }
+            else
+            {
+                <span class="text-muted">
+                    Seleccione un médico para continuar
+                </span>
+            }
+        </div>
+
+        <a href="@Url.Action("Especialidades","Admin")" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a especialidades
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <!-- SELECTOR DE MÉDICO -->
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">Seleccionar médico</h5>
+
+            <form method="get" action="@Url.Action("EspecialidadesMedico","Admin")">
+                <select name="consecutivoMedico" class="form-select" required>
+                    <option value="">Seleccione un médico</option>
+
+                    @foreach (var m in Model.Medicos)
+                    {
+                        <option value="@m.ConsecutivoMedico"
+                                @(Model.ConsecutivoMedicoSeleccionado == m.ConsecutivoMedico ? "selected" : "")>
+                            @m.Nombre
+                        </option>
+                    }
+                </select>
+
+                <button type="submit" class="btn btn-primary">Cargar</button>
+            </form>
+
+        </div>
+    </div>
+
+    @if (Model.ConsecutivoMedicoSeleccionado.HasValue)
+    {
+        <div class="row g-4">
+
+            <!-- ASIGNAR NUEVA ESPECIALIDAD -->
+            <div class="col-md-5">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">Asignar especialidad</h5>
+
+                        @using (Html.BeginForm("AgregarEspecialidadMedico", "Admin", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("ConsecutivoMedico", Model.ConsecutivoMedicoSeleccionado.Value)
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Especialidad</label>
+                                <select name="ConsecutivoEspecialidad" class="form-select" required>
+                                    <option value="">Seleccione...</option>
+                                    @foreach (var e in Model.EspecialidadesDisponibles)
+                                    {
+                                        <option value="@e.ConsecutivoEspecialidad">
+                                            @e.Nombre
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-plus-circle"></i> Asignar especialidad
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESPECIALIDADES ASIGNADAS -->
+            <div class="col-md-7">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">Especialidades asignadas</h5>
+
+                        @if (Model.EspecialidadesAsignadas == null || !Model.EspecialidadesAsignadas.Any())
+                        {
+                            <div class="alert alert-info mb-0">
+                                Este médico no tiene especialidades asignadas.
+                            </div>
+                        }
+                        else
+                        {
+                            <ul class="list-group">
+                                @foreach (var e in Model.EspecialidadesAsignadas)
+                                {
+                                    <li class="list-group-item">
+                                        @e.NombreEspecialidad
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+</div>

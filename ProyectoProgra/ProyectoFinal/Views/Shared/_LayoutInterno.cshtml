@@ -77,7 +77,7 @@
                     }
                     @if ((Session["PerfilUsuario"] as string ?? "").Equals("Doctor", System.StringComparison.OrdinalIgnoreCase))
                     {
-                        <a class="nav-link" href="@Url.Action("Index","CitasDoctor")">Mi Agenda</a>
+                        <a class="nav-link" href="@Url.Action("Index","Doctor")">Mi Agenda</a>
                     }
                     @if ((Session["PerfilUsuario"] as string ?? "").Equals("Paciente", System.StringComparison.OrdinalIgnoreCase))
                     {

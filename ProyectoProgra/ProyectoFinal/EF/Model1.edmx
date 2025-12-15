@@ -184,6 +184,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_AgregarEspecialidadMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
+          <Parameter Name="ConsecutivoEspecialidad" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_CambiarContrasena" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoUsuario" Type="int" Mode="In" />
+          <Parameter Name="ContrasenaActual" Type="nvarchar" Mode="In" />
+          <Parameter Name="ContrasenaNueva" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="sp_CancelarCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdCita" Type="int" Mode="In" />
           <Parameter Name="Motivo" Type="nvarchar" Mode="In" />
@@ -196,6 +205,15 @@
           <Parameter Name="HoraFin" Type="time" Mode="In" />
           <Parameter Name="Motivo" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="sp_CrearEspecialidad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_DeleteMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_DeleteUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoUsuario" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_EditarCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdCita" Type="int" Mode="In" />
           <Parameter Name="DoctorId" Type="int" Mode="In" />
@@ -205,9 +223,33 @@
           <Parameter Name="HoraFin" Type="time" Mode="In" />
           <Parameter Name="Motivo" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="sp_EditarEspecialidad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoEspecialidad" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="nvarchar" Mode="In" />
+          <Parameter Name="Estado" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="sp_EliminarEspecialidad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoEspecialidad" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_GetCitas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_GetCitasPorDoctor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetEspecialidadesPorMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetHorariosPorMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetMedicoPorId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetMedicos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_GetUsuarioPorId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetUsuariosPorPerfil" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoPerfil" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_InsertCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="DoctorId" Type="int" Mode="In" />
@@ -215,6 +257,38 @@
           <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
           <Parameter Name="FechaFin" Type="datetime" Mode="In" />
           <Parameter Name="Motivo" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_InsertHorarioMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
+          <Parameter Name="DiaSemana" Type="tinyint" Mode="In" />
+          <Parameter Name="HoraInicio" Type="time" Mode="In" />
+          <Parameter Name="HoraFin" Type="time" Mode="In" />
+        </Function>
+        <Function Name="sp_InsertMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoUsuario" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="nvarchar" Mode="In" />
+          <Parameter Name="Identificacion" Type="nvarchar" Mode="In" />
+          <Parameter Name="Correo" Type="nvarchar" Mode="In" />
+          <Parameter Name="Estado" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="sp_InsertMedicoEspecialidad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
+          <Parameter Name="ConsecutivoEspecialidad" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_InsertUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Identificacion" Type="nvarchar" Mode="In" />
+          <Parameter Name="Nombre" Type="nvarchar" Mode="In" />
+          <Parameter Name="Correo" Type="nvarchar" Mode="In" />
+          <Parameter Name="Contrasenna" Type="nvarchar" Mode="In" />
+          <Parameter Name="Estado" Type="bit" Mode="In" />
+          <Parameter Name="ConsecutivoPerfil" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ListarEspecialidades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_ListarEspecialidadesMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ListarEspecialidadesPorMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_MarcarCitaAtendida" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdCita" Type="int" Mode="In" />
@@ -227,11 +301,27 @@
           <Parameter Name="HoraFin" Type="time" Mode="In" />
           <Parameter Name="Observaciones" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="sp_UpdateMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoMedico" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="nvarchar" Mode="In" />
+          <Parameter Name="Identificacion" Type="nvarchar" Mode="In" />
+          <Parameter Name="Correo" Type="nvarchar" Mode="In" />
+          <Parameter Name="Estado" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="sp_UpdateUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ConsecutivoUsuario" Type="int" Mode="In" />
+          <Parameter Name="Identificacion" Type="nvarchar" Mode="In" />
+          <Parameter Name="Nombre" Type="nvarchar" Mode="In" />
+          <Parameter Name="Correo" Type="nvarchar" Mode="In" />
+          <Parameter Name="Estado" Type="bit" Mode="In" />
+          <Parameter Name="ConsecutivoPerfil" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_ValidarSolapeCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MedicoId" Type="int" Mode="In" />
           <Parameter Name="Fecha" Type="date" Mode="In" />
           <Parameter Name="HoraInicio" Type="time" Mode="In" />
           <Parameter Name="HoraFin" Type="time" Mode="In" />
+          <Parameter Name="CitaActualId" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="BDCitasMedicasModelStoreContainer">
           <EntitySet Name="tbCita" EntityType="Self.tbCita" Schema="dbo" store:Type="Tables" />
@@ -445,7 +535,7 @@
           <End Role="tbEspecialidad" Type="Self.tbEspecialidad" Multiplicity="*" />
           <End Role="tbMedico" Type="Self.tbMedico" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="BDCitasMedicasEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="BDCitasMedicasEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tbCita" EntityType="Self.tbCita" />
           <EntitySet Name="tbErrorLog" EntityType="Self.tbErrorLog" />
           <EntitySet Name="tbEspecialidad" EntityType="Self.tbEspecialidad" />
@@ -487,7 +577,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="BDCitasMedicasModelStoreContainer" CdmEntityContainer="BDCitasMedicasEntities1">
+        <EntityContainerMapping StorageEntityContainer="BDCitasMedicasModelStoreContainer" CdmEntityContainer="BDCitasMedicasEntities">
           <EntitySetMapping Name="tbCita">
             <EntityTypeMapping TypeName="BDCitasMedicasModel.tbCita">
               <MappingFragment StoreEntitySet="tbCita">

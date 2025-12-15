@@ -9,7 +9,7 @@ namespace ProyectoFinal.Services
 {
     public class CitaService
     {
-        private readonly BDCitasMedicasEntities1 _context = new BDCitasMedicasEntities1();
+        private readonly BDCitasMedicasEntities _context = new BDCitasMedicasEntities();
 
         public List<CitaDto> ListarCitas()
         {
@@ -19,7 +19,7 @@ namespace ProyectoFinal.Services
 
         public ResultadoSP CrearCita(int doctorId, int pacienteId, DateTime fechaInicio, DateTime fechaFin, string motivo)
         {
-            using (var db = new BDCitasMedicasEntities1())
+            using (var db = new BDCitasMedicasEntities())
             {
                 var result = db.Database.SqlQuery<ResultadoSP>(
                     "EXEC dbo.sp_InsertCita @DoctorId, @PacienteId, @FechaInicio, @FechaFin, @Motivo",
@@ -53,7 +53,7 @@ namespace ProyectoFinal.Services
 
         public ResultadoSP CancelarCita(int idCita, string motivo)
         {
-            using (var db = new BDCitasMedicasEntities1())
+            using (var db = new BDCitasMedicasEntities())
             {
                 var result = db.Database.SqlQuery<ResultadoSP>(
                     "EXEC dbo.sp_CancelarCita @IdCita, @Motivo",
@@ -67,7 +67,7 @@ namespace ProyectoFinal.Services
 
         public ResultadoSP MarcarAtendida(int idCita)
         {
-            using (var db = new BDCitasMedicasEntities1())
+            using (var db = new BDCitasMedicasEntities())
             {
                 try
                 {
@@ -91,7 +91,7 @@ namespace ProyectoFinal.Services
 
         public List<CitaDto> ListarCitasDoctor(int idDoctor)
         {
-            using (var db = new BDCitasMedicasEntities1())
+            using (var db = new BDCitasMedicasEntities())
             {
                 try
                 {

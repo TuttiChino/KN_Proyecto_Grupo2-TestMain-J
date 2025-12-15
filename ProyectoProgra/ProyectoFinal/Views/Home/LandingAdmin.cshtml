@@ -2,13 +2,211 @@
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
     ViewBag.Title = "Inicio | Admin";
 }
-<div class="container mt-3">
-    <h2>Panel de Administración</h2>
-    <ul class="list-unstyled">
-        <li>@Html.ActionLink("Catálogo de Médicos", "Medicos", "Admin")</li>
-        <li>@Html.ActionLink("Especialidades", "Especialidades", "Admin")</li>
-        <li>@Html.ActionLink("Horarios", "Horarios", "Admin")</li>
-        <li>@Html.ActionLink("Usuarios", "Usuarios", "Admin")</li>
-        <li>@Html.ActionLink("Reportes", "Reportes", "Admin")</li>
-    </ul>
+
+<style>
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        font-size: 1.4rem;
+        color: #fff;
+    }
+</style>
+
+<div class="container mt-4">
+
+    <!-- Encabezado -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="fw-bold text-primary">Panel de Administración</h2>
+            <div class="text-muted">Gestione todo el sistema desde un solo lugar</div>
+        </div>
+
+        <div class="text-end">
+            <div class="fw-semibold">Hoy</div>
+            <div id="fecha-hoy" class="text-muted"></div>
+        </div>
+    </div>
+
+    <!-- Tarjetas -->
+    <div class="row row-cols-1 row-cols-md-3 row-cols-xl-4 g-4">
+
+        <!-- Médicos -->
+        <div class="col d-flex">
+            <div class="card shadow-sm border-0 h-100 flex-fill">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex align-items-start gap-3 mb-3">
+                        <div class="icon-box bg-primary d-flex align-items-center justify-content-center">
+                            <i class="bi bi-person-badge"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title m-0">Médicos</h5>
+                            <small class="text-muted">Catálogo de doctores</small>
+                        </div>
+                    </div>
+
+                    <p class="text-muted mb-4">
+                        Agregue, edite o elimine médicos del sistema.
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="@Url.Action("Medicos","Admin")" class="btn btn-primary w-100">
+                            Gestionar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Especialidades -->
+        <div class="col d-flex">
+            <div class="card shadow-sm border-0 h-100 flex-fill">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex align-items-start gap-3 mb-3">
+                        <div class="icon-box bg-success d-flex align-items-center justify-content-center">
+                            <i class="bi bi-hospital"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title m-0">Especialidades</h5>
+                            <small class="text-muted">Áreas médicas</small>
+                        </div>
+                    </div>
+
+                    <p class="text-muted mb-4">
+                        Administre las especialidades disponibles en la clínica.
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="@Url.Action("Especialidades","Admin")" class="btn btn-success w-100">
+                            Gestionar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Horarios -->
+        <div class="col d-flex">
+            <div class="card shadow-sm border-0 h-100 flex-fill">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex align-items-start gap-3 mb-3">
+                        <div class="icon-box bg-warning text-dark d-flex align-items-center justify-content-center">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title m-0">Horarios</h5>
+                            <small class="text-muted">Disponibilidad médica</small>
+                        </div>
+                    </div>
+
+                    <p class="text-muted mb-4">
+                        Configure horarios y disponibilidad por médico.
+                    </p>
+
+                    <div class="mt-auto">
+                        <!-- IMPORTANTE: acción HorariosMedicos (plural) -->
+                        <a href="@Url.Action("HorariosMedicos","Admin")" class="btn btn-warning w-100">
+                            Gestionar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Usuarios -->
+        <div class="col d-flex">
+            <div class="card shadow-sm border-0 h-100 flex-fill">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex align-items-start gap-3 mb-3">
+                        <div class="icon-box bg-danger d-flex align-items-center justify-content-center">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title m-0">Usuarios</h5>
+                            <small class="text-muted">Administración de cuentas</small>
+                        </div>
+                    </div>
+
+                    <p class="text-muted mb-4">
+                        Cree y administre los usuarios del sistema.
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="@Url.Action("Usuarios","Admin")" class="btn btn-danger w-100">
+                            Gestionar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reportes -->
+        <div class="col d-flex">
+            <div class="card shadow-sm border-0 h-100 flex-fill">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex align-items-start gap-3 mb-3">
+                        <div class="icon-box bg-secondary d-flex align-items-center justify-content-center">
+                            <i class="bi bi-bar-chart-line"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title m-0">Reportes</h5>
+                            <small class="text-muted">Estadísticas del sistema</small>
+                        </div>
+                    </div>
+
+                    <p class="text-muted mb-4">
+                        Revise reportes, métricas y estadísticas.
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="@Url.Action("Reportes","Admin")" class="btn btn-secondary w-100">
+                            Ver reportes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mi Perfil (Admin) -->
+        <div class="col d-flex">
+            <div class="card shadow-sm border-0 h-100 flex-fill">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex align-items-start gap-3 mb-3">
+                        <div class="icon-box bg-info d-flex align-items-center justify-content-center">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title m-0">Mi Perfil</h5>
+                            <small class="text-muted">Datos personales</small>
+                        </div>
+                    </div>
+
+                    <p class="text-muted mb-4">
+                        Actualice su información y cambie su contraseña.
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="@Url.Action("Perfil","Citas")" class="btn btn-outline-info w-100">
+                            <i class="bi bi-key"></i> Gestionar Perfil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<script>
+(function () {
+    var el = document.getElementById('fecha-hoy');
+    if (el) {
+        var f = new Date();
+        var opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+        try { el.innerText = f.toLocaleDateString('es-ES', opciones); }
+        catch (e) { el.innerText = f.toDateString(); }
+    }
+})();
+</script>

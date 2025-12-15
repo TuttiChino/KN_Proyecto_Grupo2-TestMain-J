@@ -1,0 +1,138 @@
+@model IEnumerable<ProyectoFinal.Models.HorarioMedicoDto>
+
+@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    ViewBag.Title = "Horarios del Médico";
+
+    var medicoNombre = ViewBag.MedicoNombre as string ?? "Médico";
+    int medicoId = ViewBag.ConsecutivoMedico;
+}
+
+<div class="container mt-4">
+    <!-- Encabezado -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="fw-bold text-primary mb-0">Horarios de @medicoNombre</h2>
+            <span class="text-muted">Configure los días y horas de atención.</span>
+        </div>
+        <div>
+            <a href="@Url.Action("HorariosMedicos", "Admin")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Volver a lista de médicos
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="row g-4">
+        <!-- Horarios registrados -->
+        <div class="col-md-7">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Horarios registrados</h5>
+
+                    @if (Model == null || !Model.Any())
+                    {
+                        <div class="alert alert-info mb-0">
+                            No hay horarios configurados para este médico.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Día</th>
+                                        <th>Inicio</th>
+                                        <th>Fin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var h in Model)
+                                    {
+                                        <tr>
+                                            <td>@DiaTexto(h.DiaSemana)</td>
+                                            <td>@h.HoraInicio.ToString(@"hh\:mm")</td>
+                                            <td>@h.HoraFin.ToString(@"hh\:mm")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario para agregar horario -->
+        <div class="col-md-5">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Agregar horario</h5>
+
+                    @using (Html.BeginForm("AgregarHorarioMedico", "Admin", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("ConsecutivoMedico", medicoId)
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Día de la semana</label>
+                            <select name="DiaSemana" class="form-select" required>
+                                <option value="">Seleccione...</option>
+                                <option value="1">Lunes</option>
+                                <option value="2">Martes</option>
+                                <option value="3">Miércoles</option>
+                                <option value="4">Jueves</option>
+                                <option value="5">Viernes</option>
+                                <option value="6">Sábado</option>
+                                <option value="7">Domingo</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Hora inicio</label>
+                            <input type="time" name="HoraInicio" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Hora fin</label>
+                            <input type="time" name="HoraFin" class="form-control" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-plus-circle"></i> Guardar horario
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@helper DiaTexto(byte dia)
+{
+    string txt = "";
+
+    switch (dia)
+    {
+        case 1: txt = "Lunes"; break;
+        case 2: txt = "Martes"; break;
+        case 3: txt = "Miércoles"; break;
+        case 4: txt = "Jueves"; break;
+        case 5: txt = "Viernes"; break;
+        case 6: txt = "Sábado"; break;
+        case 7: txt = "Domingo"; break;
+        default: txt = "N/D"; break;
+    }
+
+    @txt
+}

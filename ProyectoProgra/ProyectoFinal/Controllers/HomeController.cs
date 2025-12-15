@@ -21,7 +21,7 @@ namespace ProyectoFinal.Controllers
                 return View();
             }
 
-            using (var db = new BDCitasMedicasEntities1())
+            using (var db = new BDCitasMedicasEntities())
             {
                 var user = (from u in db.tbUsuario
                             join p in db.tbPerfil on u.ConsecutivoPerfil equals p.ConsecutivoPerfil

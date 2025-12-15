@@ -1,0 +1,69 @@
+@model IEnumerable<ProyectoFinal.Models.MedicoDto>
+
+@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    ViewBag.Title = "Horarios de Médicos";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-primary mb-2">Horarios de Médicos</h2>
+    <p class="text-muted mb-4">Seleccione un médico para gestionar sus horarios de atención.</p>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            No hay médicos registrados en el sistema.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Identificación</th>
+                                <th>Correo</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in Model)
+                            {
+                                <tr>
+                                    <td>@m.Nombre</td>
+                                    <td>@m.Identificacion</td>
+                                    <td>@m.CorreoElectronico</td>
+                                    <td>
+                                        @if (m.Estado)
+                                        {
+                                            <span class="badge bg-success">Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactivo</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("HorariosMedico", "Admin", new { id = m.ConsecutivoMedico })"
+                                           class="btn btn-sm btn-primary">
+                                            <i class="bi bi-clock-history"></i> Gestionar horarios
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

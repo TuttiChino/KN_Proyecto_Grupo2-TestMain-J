@@ -13,10 +13,10 @@ namespace ProyectoFinal.EF
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class BDCitasMedicasEntities1 : DbContext
+    public partial class BDCitasMedicasEntities : DbContext
     {
-        public BDCitasMedicasEntities1()
-            : base("name=BDCitasMedicasEntities1")
+        public BDCitasMedicasEntities()
+            : base("name=BDCitasMedicasEntities")
         {
         }
     
