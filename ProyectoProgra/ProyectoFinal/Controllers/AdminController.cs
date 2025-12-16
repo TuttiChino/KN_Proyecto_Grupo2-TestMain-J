@@ -1,7 +1,9 @@
-﻿using ProyectoFinal.Models;
+﻿using ProyectoFinal.EF;
+using ProyectoFinal.Models;
 using ProyectoFinal.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -239,6 +241,38 @@ namespace ProyectoFinal.Controllers
             return RedirectToAction("EspecialidadesMedico", new { id = model.ConsecutivoMedico });
         }
 
+        public ActionResult Reportes(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            DateTime fi = fechaInicio ?? DateTime.Today.AddDays(-30);
+            DateTime ff = fechaFin ?? DateTime.Today;
+
+            var vm = new ReporteResumenVM
+            {
+                FechaInicio = fi,
+                FechaFin = ff
+            };
+
+            using (var db = new BDCitasMedicasEntities())
+            {
+                var data = db.Database.SqlQuery<ReporteResumenDto>(
+                    "EXEC sp_ReporteResumenGeneral @FechaInicio, @FechaFin",
+                    new SqlParameter("@FechaInicio", fi),
+                    new SqlParameter("@FechaFin", ff)
+                ).FirstOrDefault();
+
+                if (data != null)
+                {
+                    vm.TotalCitas = data.TotalCitas;
+                    vm.CitasProgramadas = data.CitasProgramadas;
+                    vm.CitasCompletadas = data.CitasCompletadas;
+                    vm.CitasCanceladas = data.CitasCanceladas;
+                    vm.TotalMedicos = data.TotalMedicos;
+                    vm.TotalPacientes = data.TotalPacientes;
+                }
+            }
+
+            return View(vm); 
+        }
 
     }
 }

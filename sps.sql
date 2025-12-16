@@ -424,3 +424,36 @@ BEGIN
 END
 
 
+--Reportes:
+
+CREATE PROCEDURE dbo.sp_ReporteResumenGeneral
+(
+    @FechaInicio DATE,
+    @FechaFin    DATE
+)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Total de citas en rango
+    SELECT
+        COUNT(*) AS TotalCitas,
+        SUM(CASE WHEN Estado = N'Programada'   THEN 1 ELSE 0 END) AS CitasProgramadas,
+        SUM(CASE WHEN Estado = N'Completada'   THEN 1 ELSE 0 END) AS CitasCompletadas,
+        SUM(CASE WHEN Estado = N'Cancelada'    THEN 1 ELSE 0 END) AS CitasCanceladas
+    FROM dbo.tbCita
+    WHERE Fecha BETWEEN @FechaInicio AND @FechaFin;
+
+    -- Médicos activos
+    SELECT COUNT(*) AS TotalMedicos
+    FROM dbo.tbMedico
+    WHERE Estado = 1;
+
+    -- Pacientes activos
+    SELECT COUNT(*) AS TotalPacientes
+    FROM dbo.tbUsuario u
+    INNER JOIN dbo.tbPerfil p ON p.ConsecutivoPerfil = u.ConsecutivoPerfil
+    WHERE p.Nombre = N'Paciente'
+      AND u.Estado = 1;
+END;
+GO
